@@ -1,0 +1,6 @@
+code/api/src/config/credentials.json
+code/api/src/config/credentials.test.json
+code/web/src/config/config.json
+code/web/src/config/config.dev.json
+node_modules
+.idea

@@ -1,0 +1,10 @@
+{
+  "name": "mastoviewr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "web": "cd code/web && yarn dev",
+    "api": "cd code/api && yarn dev"
+  }
+}

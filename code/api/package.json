@@ -1,0 +1,14 @@
+{
+  "name": "mastoviewr-api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "dev": "nodemon --exec \"micro src/index.js\""
+  },
+  "dependencies": {
+    "axios": "^0.16.1",
+    "micro": "^7.3.3",
+    "qs": "^6.4.0"
+  }
+}
