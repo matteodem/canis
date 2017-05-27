@@ -9,12 +9,12 @@
       </div>
     </div>
     <div v-if="isLoading">Loading...</div>
-    <div v-if="!isLoading" class="overflow-y-scroll" style="max-height: 60vh"
+    <div class="overflow-y-scroll" style="max-height: 60vh"
          v-infinite-scroll="loadMore"
          infinite-scroll-disabled="busy"
          infinite-scroll-immediate-check="false"
-         infinite-scroll-distance="400">
-      <div v-for="item in items" class="bb b--dark-gray">
+         infinite-scroll-distance="900">
+      <div v-show="!isLoading" v-for="item in items" class="bb b--dark-gray">
         <toot :item="item"></toot>
       </div>
     </div>
@@ -74,7 +74,9 @@
         })
       },
       loadMore() {
-        console.log('loading more')
+        this.busy = true
+
+        if (this.isLoading) return null
 
         api(this.$store.state.apiEndpoint).callWithToken(
           this.$store.state.accessToken,
@@ -87,6 +89,7 @@
             ...this.items,
             ...res.data,
           ]
+          this.busy = false
         })
       }
     },

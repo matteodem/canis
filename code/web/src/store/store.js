@@ -44,7 +44,10 @@ export default new Vuex.Store({
     apiEndpoint: '',
     accessToken: '',
     user: {},
-    views: [],
+    views: [
+      { type: 'home' },
+      { type: 'public' },
+    ],
   },
   mutations: {
     mastodonInstanceRegistered(state, { apiEndpoint, clientId, clientSecret }) {
