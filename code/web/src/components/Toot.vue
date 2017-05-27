@@ -9,7 +9,7 @@
       </div>
       <div class="fl w-80 pr3 tl f6">
         <div v-if="boostedBy" class="mb2 gray">
-          boosted by <span class="i" v-text="boostedBy"></span>
+          boosted by <span class="i pointer" @click="openBoosterAccount" v-text="boostedBy"></span>
         </div>
         <div>
           <div class="dib b mb1 pointer" @click="openAccount" v-text="item.account.username"></div>
@@ -64,6 +64,9 @@
       },
       openAccount() {
         window.open(`${this.$store.state.apiEndpoint}/web/accounts/${this.item.account.id}`)
+      },
+      openBoosterAccount() {
+        window.open(`${this.$store.state.apiEndpoint}/web/accounts/${this.item.reblog.account.id}`)
       },
     },
   }

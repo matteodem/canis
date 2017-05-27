@@ -26,7 +26,7 @@
           </form>
 
           <div v-if="$store.state.apiEndpoint" class="tc">
-            <div class="f3-ns f5">You are signing into <a :href="$store.state.apiEndpoint"
+            <div class="f3-ns f5">You will sign in over <a :href="$store.state.apiEndpoint"
                                                     class="b no-underline light-blue"
                                                     v-text="$store.state.apiEndpoint"></a></div>
 
