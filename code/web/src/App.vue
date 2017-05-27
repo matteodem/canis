@@ -1,12 +1,12 @@
 <template>
   <div class="navy-bg white" style="min-height: 100vh">
     <div class="open-sans">
-      <div class="mw8 mx-auto" v-if="!$store.state.accessToken">
+      <div class="mw8 ph2 ph0-ns mx-auto" v-if="!$store.state.accessToken">
         <div>
-          <div class="tc pt4 mb6">
-            <h1 class="f-headline mv1 b">mastoviewr</h1>
+          <div class="tc pt4 mb6-ns mb5">
+            <h1 class="f-headline-ns f1 mv1 b">mastoviewr</h1>
 
-            <div class="f1 mv3">Flexible timeline views. For Mastodon.</div>
+            <div class="f1-ns f3 mv3">Flexible timeline views. For Mastodon.</div>
           </div>
 
           <form class="tc ph3-ns mw6 mx-auto"
@@ -17,7 +17,7 @@
                 <input-component
                         type="text"
                         @change="usernameWithDomain = arguments[0]"
-                        placeholder="username@mastodon.instance"></input-component>
+                        placeholder="username@mstdn.instance"></input-component>
               </div>
               <div class="fl w-40 pl2">
                 <button-component>Continue</button-component>
@@ -26,7 +26,7 @@
           </form>
 
           <div v-if="$store.state.apiEndpoint" class="tc">
-            <div class="f3">You are signing into <a :href="$store.state.apiEndpoint"
+            <div class="f3-ns f5">You are signing into <a :href="$store.state.apiEndpoint"
                                                     class="b no-underline light-blue"
                                                     v-text="$store.state.apiEndpoint"></a></div>
 

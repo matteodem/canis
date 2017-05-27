@@ -5,11 +5,8 @@ import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-// only put stuff into vuex state that needs to be shared and in local storage!
-
 // TODO: display vuex view state (feed)
 // TODO: add simple view state logic (home, mentions, tags, search?)
-// TODO: change name of project
 export default new Vuex.Store({
   plugins: [createPersistedState({
     key: 'mastoviewrState'
