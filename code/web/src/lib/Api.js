@@ -21,16 +21,9 @@ const doRequest = (
   })
 
 
-const callWithToken = (endpoint, token, path, requestData) => doRequest({
-  ...requestData,
-  url: `${endpoint}${path}`,
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-})
 
 export default (endpoint) => {
-  return {
+  const methods = {
     registerApp: async () => {
       try {
         const response = await doRequest({
@@ -63,10 +56,19 @@ export default (endpoint) => {
 
       return res.data
     },
-    validateToken: async (token) => {
-      const res = await callWithToken(endpoint, token, '/api/v1/accounts/verify_credentials')
-      return res.data && res.data.id
+    getUser: async (token) => {
+      const res = await methods.callWithToken(token, '/api/v1/accounts/verify_credentials')
+
+      return res.data
     },
-    callWithToken: (...args) =>  callWithToken(endpoint, ...args),
+    callWithToken: (token, path, requestData) => doRequest({
+      ...requestData,
+      url: `${endpoint}${path}`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }),
   }
+
+  return methods
 }

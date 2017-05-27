@@ -29,7 +29,7 @@
       </div>
 
       <div v-if="$store.state.accessToken">
-        You're logged in!
+        You're logged in! <span v-if="$store.state.user.acct" v-text="`as ${$store.state.user.acct}`"></span>
         <button @click="$store.dispatch('logOut')">Logout again!</button>
 
         <timeline-views></timeline-views>

@@ -9,8 +9,7 @@ Vue.use(Vuex)
 
 // TODO: display vuex view state (feed)
 // TODO: add simple view state logic (home, mentions, tags, search?)
-// TODO: create simple mastodon js library
-// TODO: change name
+// TODO: change name of project
 export default new Vuex.Store({
   plugins: [createPersistedState({
     key: 'mastoviewrState'
@@ -20,13 +19,15 @@ export default new Vuex.Store({
     clientSecret: '',
     apiEndpoint: '',
     accessToken: '',
+    user: {},
     views: [
       {
         type: 'home',
+        reloadSeconds: 5,
       },
       {
-        type: 'hashtag',
-        data: { term: 'technology' },
+        type: 'mentions',
+        reloadSeconds: 10,
       },
     ],
   },
@@ -46,6 +47,9 @@ export default new Vuex.Store({
     },
     accessTokenRemoved(state) {
       state.accessToken = ''
+    },
+    userDataChanged(state, userData) {
+      state.user = userData
     },
   },
   actions: {
@@ -86,8 +90,10 @@ export default new Vuex.Store({
       const { accessToken, apiEndpoint } = state
 
       if (accessToken) {
-        api(apiEndpoint).validateToken(accessToken).then(isValid => {
-          if (!isValid) commit('accessTokenRemoved')
+        api(apiEndpoint).getUser(accessToken).then(user => {
+          if (!user || !user.id) return commit('accessTokenRemoved')
+
+          commit('userDataChanged', user)
         })
       }
     },
