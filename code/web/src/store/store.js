@@ -23,6 +23,8 @@ const types = {
   }
 }
 
+const move = (arr, from, to) => arr.splice(to, 0, arr.splice(from, 1)[0])
+
 export default new Vuex.Store({
   plugins: [createPersistedState({
     key: 'mastoviewrState'
@@ -75,6 +77,9 @@ export default new Vuex.Store({
     viewAdded(state, viewData) {
       state.views.push(viewData)
     },
+    viewMoved(state, { viewIndex, pos }) {
+      move(state.views, viewIndex, (viewIndex + pos))
+    },
   },
   actions: {
     adjustMastodonUri({ commit }, usernameWithDomain) {
@@ -126,6 +131,9 @@ export default new Vuex.Store({
     },
     addView({ commit }, viewData) {
       commit('viewAdded', viewData)
+    },
+    moveView({ commit }, data) {
+      commit('viewMoved', data)
     },
     logOut({ commit }) {
       commit('accessTokenRemoved')

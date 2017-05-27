@@ -48,7 +48,10 @@
         <div class="mw6 mx-auto pt3">
           <div class="cf">
             <div class="fl w-50 pt2">
-              <span v-if="$store.state.user.acct" v-text="$store.state.user.acct"></span>
+              <a :href="`${$store.state.apiEndpoint}/web/accounts/${$store.state.user.id}`"
+                 v-if="$store.state.user.acct"
+                 class="reset-link light-blue"
+                 v-text="$store.state.user.acct"></a>
             </div>
             <div class="fl w-20">
               <div class="ml3">
@@ -87,10 +90,20 @@
             </form>
           </div>
 
-          <div v-for="(view, viewIndex) in $store.getters.enhancedViews">
-            <div v-text="view.title" class="mt2 dib"></div>
+          <div v-for="(view, viewIndex) in $store.getters.enhancedViews" class="tl mw5 mx-auto">
+            <div v-text="view.title" style="min-width: 150px" class="mt2 dib"></div>
             <div class="dib v-mid">
-              <i class="ion ion-ios-close f2 ml2 pointer" @click="$store.dispatch('removeView', viewIndex)"></i>
+              <i class="ion ion-ios-close f2 ml2 pointer"
+                 @click="$store.dispatch('removeView', viewIndex)"></i>
+            </div>
+            <div class="dib v-mid" v-if="viewIndex > 0">
+              <i
+                      class="ion ion-ios-arrow-up f2 ml2 pointer"
+                      @click="$store.dispatch('moveView', { viewIndex, pos: -1 })"></i>
+            </div>
+            <div class="dib v-mid" v-if="viewIndex !== ($store.getters.enhancedViews.length - 1)">
+              <i class="ion ion-ios-arrow-down f2 ml2 pointer"
+                 @click="$store.dispatch('moveView', { viewIndex, pos: 1 })"></i>
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@ export default function () {
     const [baseUri, strParams] = window.location.href.split('?')
     const { code } = qs.parse(strParams)
 
-    store.dispatch('registerAccessToken', { code, baseUri })
+    return store.dispatch('registerAccessToken', { code, baseUri })
   }
 
   store.dispatch('validateAccessToken')
