@@ -15,14 +15,11 @@
       }
     },
     mounted() {
-      api(this.mastodonApiEndpoint).callAuthorized(
+      // TODO: loop through $store.state.views and display them in frontend as separate TimelineView.vue
+      /*api(this.$store.state.apiEndpoint).callWithToken(
         this.$store.state.accessToken,
-        {
-          endpoint: '/api/v1/timelines/home',
-          method: 'get',
-          data: { limit: 25 },
-        },
-      ).then(res => console.log(res.data))
+        '/api/v1/timelines/home'
+      ).then(res => this.feedData = JSON.stringify(res.data))*/
     },
   }
 </script>

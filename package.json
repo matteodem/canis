@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "AGPL-3.0",
   "scripts": {
-    "web": "cd code/web && yarn dev",
-    "api": "cd code/api && yarn dev"
+    "web": "cd code/web && yarn dev"
   }
 }
