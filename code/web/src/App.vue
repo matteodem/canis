@@ -96,14 +96,14 @@
               <i class="ion ion-ios-close f2 ml2 pointer"
                  @click="$store.dispatch('removeView', viewIndex)"></i>
             </div>
-            <div class="dib v-mid" v-if="viewIndex > 0">
+            <div class="dib v-mid">
               <i
-                      class="ion ion-ios-arrow-up f2 ml2 pointer"
-                      @click="$store.dispatch('moveView', { viewIndex, pos: -1 })"></i>
+                      :class="['ion ion-ios-arrow-up f2 ml2', viewIndex > 0 ? 'pointer' : '']"
+                      @click="viewIndex > 0 && $store.dispatch('moveView', { viewIndex, pos: -1 })"></i>
             </div>
-            <div class="dib v-mid" v-if="viewIndex !== ($store.getters.enhancedViews.length - 1)">
-              <i class="ion ion-ios-arrow-down f2 ml2 pointer"
-                 @click="$store.dispatch('moveView', { viewIndex, pos: 1 })"></i>
+            <div class="dib v-mid">
+              <i :class="['ion ion-ios-arrow-down f2 ml2', viewIndex !== ($store.getters.enhancedViews.length - 1) ? 'pointer' : '']"
+                 @click="viewIndex !== ($store.getters.enhancedViews.length - 1) && $store.dispatch('moveView', { viewIndex, pos: 1 })"></i>
             </div>
           </div>
         </div>

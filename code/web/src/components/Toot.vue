@@ -12,7 +12,7 @@
           boosted by <span class="i pointer" @click="openBoosterAccount" v-text="boostedBy"></span>
         </div>
         <div>
-          <div class="dib b mb1 pointer" @click="openAccount" v-text="item.account.username"></div>
+          <div class="dib b mb1 pointer" @click="openAccount" v-text="item.account.display_name"></div>
           <div class="dib ml1 f7 mb1" v-text="formattedCreatedAt"></div>
         </div>
 
@@ -52,7 +52,7 @@
         }
       },
       boostedBy() {
-        return this.item.reblog && this.item.reblog.account.username
+        return this.item.reblog && this.item.reblog.account.display_name
       },
       formattedCreatedAt() {
         return moment(this.item.created_at).fromNow()

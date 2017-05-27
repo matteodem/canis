@@ -14,17 +14,23 @@ body { margin: 0; padding: 0; }
 .mastodon-gray-bg { background-color: $mastodonGray; }
 .white { color: $white; }
 
+.overflow-ellipsis-styles {
+  text-overflow: ellipsis;
+  max-width: 230px;
+  vertical-align: top;
+  display: inline-block;
+  overflow: hidden;
+}
+
 .custom-toot-content {
-  p { margin: 0; }
+  p {
+    margin: 0;
+    @extend .overflow-ellipsis-styles;
+  }
 
   a {
     color: $lightBlue;
-    text-overflow: ellipsis;
-    max-width: 230px;
-    display: inline-block;
-    vertical-align: top;
-    overflow: hidden;
-    white-space: nowrap;
+    @extend .overflow-ellipsis-styles;
   }
 }
 

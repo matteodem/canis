@@ -4,12 +4,10 @@
       <div class="dib v-mid">
         <h2 class="f3" v-text="timelineTitle"></h2>
       </div>
-      <div class="dib pl2 f2 v-mid" style="margin-top: 4px">
-        <i class="ion pointer ion-ios-refresh" @click="loadItems"></i>
-      </div>
     </div>
     <div v-if="isLoading">Loading...</div>
     <div class="overflow-y-scroll" style="max-height: 60vh"
+         ref="scrollView"
          v-infinite-scroll="loadMore"
          infinite-scroll-disabled="busy"
          infinite-scroll-immediate-check="false"
@@ -23,6 +21,29 @@
 <script>
   import api from '../lib/Api'
   import Toot from './Toot.vue'
+
+  const constantlyLoadNewerItems = (scope, timeoutTime) => {
+    if (!scope.items.length
+      || !scope.$refs.scrollView
+      || scope.$refs.scrollView.scrollTop > 30) {
+      setTimeout(() => constantlyLoadNewerItems(scope, timeoutTime), timeoutTime)
+    } else {
+      setTimeout(() => {
+        api(scope.$store.state.apiEndpoint)
+          .callWithToken(
+            scope.$store.state.accessToken,
+            scope.view.path,
+            { params: { since_id: scope.items[0].id  } }
+          ).then(res => {
+          scope.items  = [
+            ...res.data,
+            ...scope.items,
+          ]
+          constantlyLoadNewerItems(scope, timeoutTime)
+        })
+      }, timeoutTime)
+    }
+  }
 
   export default {
     components: { Toot },
@@ -41,17 +62,10 @@
     mounted() {
       this.loadItems()
 
-      const { EventSource } = window
-      const streamingPath = this.view.streamingPath
-
-      if (EventSource && streamingPath) {
-        // TODO: fix
-        /*api(this.$store.state.apiEndpoint).streamWithToken(
-          this.$store.state.accessToken,
-          streamingPath,
-          msg => console.log(msg)
-        )*/
-      }
+      setTimeout(
+        () => constantlyLoadNewerItems(this, this.view.reloadSeconds),
+        Math.random() * 4000,
+      )
     },
     computed: {
       timelineTitle() {
@@ -81,9 +95,7 @@
         api(this.$store.state.apiEndpoint).callWithToken(
           this.$store.state.accessToken,
           this.view.path,
-          {
-            params: { max_id: this.items[this.items.length - 1].id },
-          }
+          { params: { max_id: this.items[this.items.length - 1].id } }
         ).then(res => {
           this.items  = [
             ...this.items,

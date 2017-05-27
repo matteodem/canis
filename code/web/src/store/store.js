@@ -11,16 +11,19 @@ const types = {
     path: () => '/api/v1/timelines/home',
     streamingPath: () => '/api/v1/streaming/user',
     title: () => 'Home',
+    reloadSeconds: () => 10000,
   },
   public: {
     path: () => '/api/v1/timelines/public',
     streamingPath: () => '/api/v1/streaming/public',
     title: () => 'Public',
+    reloadSeconds: () => 5000,
   },
   hashtag: {
     path: (data) => `/api/v1/timelines/tag/${data.hashtag}`,
     streamingPath: (data) => `/api/v1/streaming/hashtag/?tag=${data.hashtag}`,
     title: (data) => `#${data.hashtag}`,
+    reloadSeconds: () => 15000,
   }
 }
 
@@ -47,6 +50,7 @@ export default new Vuex.Store({
     apiEndpoint: '',
     accessToken: '',
     user: {},
+    modalUrl: '',
     views: [
       { type: 'home' },
       { type: 'public' },
@@ -80,6 +84,9 @@ export default new Vuex.Store({
     },
     viewMoved(state, { viewIndex, pos }) {
       move(state.views, viewIndex, (viewIndex + pos))
+    },
+    modalUrlChanged(state, url) {
+      state.modalUrl = url
     },
   },
   actions: {
@@ -135,6 +142,9 @@ export default new Vuex.Store({
     },
     moveView({ commit }, data) {
       commit('viewMoved', data)
+    },
+    openInModal({ commit }, url) {
+      commit('modalUrlChanged', url)
     },
     logOut({ commit }) {
       commit('accessTokenRemoved')
