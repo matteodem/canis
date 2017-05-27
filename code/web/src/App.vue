@@ -4,13 +4,13 @@
       <div class="mw8 ph2 ph0-ns mx-auto" v-if="!$store.state.accessToken">
         <div>
           <div class="tc pt4 mb6-ns mb5">
-            <h1 class="f-headline-ns f1 mv1 b">mastoviewr</h1>
+            <h1 class="f-headline-ns f1 mv1 b" v-text="$appName"></h1>
 
             <div class="f1-ns f3 mv3">Flexible timeline views. For Mastodon.</div>
           </div>
 
           <form class="tc ph3-ns mw6 mx-auto"
-                @submit.prevent="$store.dispatch('adjustMastodonUri', usernameWithDomain)"
+                @submit.prevent="$store.dispatch('adjustMastodonUri', { usernameWithDomain, $appName })"
                 v-if="!$store.state.apiEndpoint">
             <div class="cf">
               <div class="fl w-60">

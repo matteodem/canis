@@ -10,6 +10,7 @@ import infiniteScroll from 'vue-infinite-scroll'
 import App from './App.vue'
 import './styles/styles.scss'
 import store from './store/store'
+import config from './config/config.json'
 
 Vue.use(infiniteScroll)
 
@@ -22,6 +23,8 @@ export default function () {
   }
 
   store.dispatch('validateAccessToken')
+
+  Vue.prototype.$appName = config.appName
 
   new Vue({
     el: '#app',

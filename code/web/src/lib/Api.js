@@ -27,13 +27,13 @@ const doRequest = (
 
 export default (endpoint) => {
   const methods = {
-    registerApp: async () => {
+    registerApp: async (appName) => {
       try {
         const response = await doRequest({
           method: 'post',
           url: `${endpoint}/api/v1/apps`,
           data: {
-            client_name: 'mastoviewr',
+            client_name: appName,
             redirect_uris: window.location.href,
             scopes: 'read',
           },

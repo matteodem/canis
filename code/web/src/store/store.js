@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from '../lib/Api'
+import config from '../config/config.json'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -27,7 +28,7 @@ const move = (arr, from, to) => arr.splice(to, 0, arr.splice(from, 1)[0])
 
 export default new Vuex.Store({
   plugins: [createPersistedState({
-    key: 'mastoviewrState'
+    key: `${config.appName}State`,
   })],
   getters: {
     enhancedViews(state) {
@@ -82,11 +83,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    adjustMastodonUri({ commit }, usernameWithDomain) {
+    adjustMastodonUri({ commit }, { usernameWithDomain, $appName }) {
       if (usernameWithDomain.includes('@')) {
         const apiEndpoint = `https://${usernameWithDomain.split('@')[1]}`.replace(/\/+$/, '')
 
-        api(apiEndpoint).registerApp().then(data => {
+        api(apiEndpoint).registerApp($appName).then(data => {
           const { client_id, client_secret } = data
 
           if (!client_id || !client_secret) {
