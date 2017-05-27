@@ -3,7 +3,7 @@ import qs from 'qs'
 import Vue from 'vue'
 import App from './App.vue'
 import './styles/styles.scss'
-import store from './store'
+import store from './store/store'
 
 export default function () {
   if (window.location.href.includes('code=')) {

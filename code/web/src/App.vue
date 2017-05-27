@@ -1,38 +1,66 @@
 <template>
   <div class="navy-bg white" style="min-height: 100vh">
-    <div class="open-sans mw8 mx-auto">
-      <div v-if="!$store.state.accessToken">
+    <div class="open-sans">
+      <div class="mw8 mx-auto" v-if="!$store.state.accessToken">
         <div>
-          <div class="tc pt4">
-            <h1 class="f1 mv0 b">Mastoviewr</h1>
+          <div class="tc pt4 mb6">
+            <h1 class="f-headline mv1 b">mastoviewr</h1>
 
-            <ul>
-              <li>Open source</li>
-              <li>Custom views</li>
-            </ul>
+            <div class="f1 mv3">Flexible timeline views. For Mastodon.</div>
           </div>
 
-          <form @submit.prevent="$store.dispatch('adjustMastodonUri', usernameWithDomain)" v-if="!$store.state.apiEndpoint">
-            Your mastodon username
-            <input type="text" @change="usernameWithDomain = $event.target.value" placeholder="username@mastodon.instance" />
+          <form class="tc ph3-ns mw6 mx-auto"
+                @submit.prevent="$store.dispatch('adjustMastodonUri', usernameWithDomain)"
+                v-if="!$store.state.apiEndpoint">
+            <div class="cf">
+              <div class="fl w-60">
+                <input-component
+                        type="text"
+                        @change="usernameWithDomain = arguments[0]"
+                        placeholder="username@mastodon.instance"></input-component>
+              </div>
+              <div class="fl w-40 pl2">
+                <button-component>Continue</button-component>
+              </div>
+            </div>
           </form>
 
-          <div v-if="$store.state.apiEndpoint">
-            Mastodon Instance: <span v-text="$store.state.apiEndpoint"></span>
-            <button @click="$store.dispatch('resetMastodonUri')">Change instance</button>
+          <div v-if="$store.state.apiEndpoint" class="tc">
+            <div class="f3">You are signing into <a :href="$store.state.apiEndpoint"
+                                                    class="b no-underline light-blue"
+                                                    v-text="$store.state.apiEndpoint"></a></div>
 
-            <div>
-              <button @click="openRegisterSite">Sign in</button>
+            <div class="cf mw6 mx-auto mt4">
+              <div class="fl w-50">
+                <button-component :prevent="true" @click="openRegisterSite">Sign In</button-component>
+              </div>
+              <div class="fl w-50">
+                <button-component backgroundColor="bg-dark-green"
+                                  :prevent="true"
+                                  @click="$store.dispatch('resetMastodonUri')">Change Instance</button-component>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div v-if="$store.state.accessToken">
-        You're logged in! <span v-if="$store.state.user.acct" v-text="`as ${$store.state.user.acct}`"></span>
-        <button @click="$store.dispatch('logOut')">Logout again!</button>
+      <div v-if="$store.state.accessToken" class="tc">
+        <div class="mw5 mx-auto pt3">
+          <div class="cf">
+            <div class="fl w-50">
+              <span v-if="$store.state.user.acct" v-text="$store.state.user.acct"></span>
+            </div>
+            <div class="fl w-50">
+              <div class="ml3">
+                <button-component @click="$store.dispatch('logOut')">Logout</button-component>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <timeline-views></timeline-views>
+        <div class="mt3">
+          <timeline-views></timeline-views>
+        </div>
       </div>
     </div>
   </div>
@@ -40,9 +68,15 @@
 <script>
   import api from './lib/Api'
   import TimelineViews from './components/TimelineViews.vue'
+  import InputComponent from './components/Input.vue'
+  import ButtonComponent from './components/Button.vue'
 
   export default {
-    components: { TimelineViews },
+    components: {
+      TimelineViews,
+      InputComponent,
+      ButtonComponent,
+    },
     data() {
       return {
         usernameWithDomain: '',
