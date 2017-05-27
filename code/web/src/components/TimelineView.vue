@@ -22,10 +22,12 @@
   import api from '../lib/Api'
   import Toot from './Toot.vue'
 
+  const doNotLoadNewItems = scope => (!scope.items.length
+  || !scope.$refs.scrollView
+  || scope.$refs.scrollView.scrollTop > 30)
+
   const constantlyLoadNewerItems = (scope, timeoutTime) => {
-    if (!scope.items.length
-      || !scope.$refs.scrollView
-      || scope.$refs.scrollView.scrollTop > 30) {
+    if (doNotLoadNewItems(scope)) {
       setTimeout(() => constantlyLoadNewerItems(scope, timeoutTime), timeoutTime)
     } else {
       setTimeout(() => {
@@ -33,8 +35,10 @@
           .callWithToken(
             scope.$store.state.accessToken,
             scope.view.path,
-            { params: { since_id: scope.items[0].id  } }
+            { params: { since_id: scope.items[0].id , limit: 40 } }
           ).then(res => {
+          if (doNotLoadNewItems(scope)) return null
+
           scope.items  = [
             ...res.data,
             ...scope.items,

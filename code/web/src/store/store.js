@@ -11,13 +11,13 @@ const types = {
     path: () => '/api/v1/timelines/home',
     streamingPath: () => '/api/v1/streaming/user',
     title: () => 'Home',
-    reloadSeconds: () => 10000,
+    reloadSeconds: () => 12000,
   },
   public: {
     path: () => '/api/v1/timelines/public',
     streamingPath: () => '/api/v1/streaming/public',
     title: () => 'Public',
-    reloadSeconds: () => 5000,
+    reloadSeconds: () => 3000,
   },
   hashtag: {
     path: (data) => `/api/v1/timelines/tag/${data.hashtag}`,
