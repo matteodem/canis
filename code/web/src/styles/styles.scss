@@ -2,6 +2,8 @@
 
 $navy: #10102d;
 $white: #fbfbfb;
+$mastodonGray: rgb(25,27,34);
+$lightBlue: #7cc4e6;
 
 body { margin: 0; padding: 0; }
 
@@ -9,5 +11,20 @@ body { margin: 0; padding: 0; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
 .navy-bg { background-color: $navy; }
+.mastodon-gray-bg { background-color: $mastodonGray; }
 .white { color: $white; }
+
+.custom-toot-content {
+  p { margin: 0; }
+
+  a {
+    color: $lightBlue;
+    text-overflow: ellipsis;
+    max-width: 230px;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
 

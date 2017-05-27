@@ -1,5 +1,8 @@
 import qs from 'qs'
 import axios from 'axios'
+import es from 'event-source/eventsource'
+
+const EventSource = es.default
 
 const doRequest = (
     {
@@ -68,6 +71,23 @@ export default (endpoint) => {
         Authorization: `Bearer ${token}`
       }
     }),
+    streamWithToken: (token, path, onMessage) => {
+      const source = new EventSource(`${endpoint}${path}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      source.onopen = function (e) {
+        source.onmessage = function (event) {
+          console.log(event)
+        }
+      }
+
+      source.onerror = function (e) {
+        console.error(e)
+      }
+    }
   }
 
   return methods

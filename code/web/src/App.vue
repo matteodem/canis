@@ -45,20 +45,57 @@
       </div>
 
       <div v-if="$store.state.accessToken" class="tc">
-        <div class="mw5 mx-auto pt3">
+        <div class="mw6 mx-auto pt3">
           <div class="cf">
-            <div class="fl w-50">
+            <div class="fl w-50 pt2">
               <span v-if="$store.state.user.acct" v-text="$store.state.user.acct"></span>
             </div>
-            <div class="fl w-50">
+            <div class="fl w-20">
               <div class="ml3">
                 <button-component @click="$store.dispatch('logOut')">Logout</button-component>
+              </div>
+            </div>
+            <div class="fl w-30">
+              <div class="ml3">
+                <button-component :backgroundColor="manageViewsMode ? 'bg-red' : undefined"
+                                  @click="manageViewsMode = !manageViewsMode">
+                  <div v-if="!manageViewsMode">Manage views</div>
+                  <div v-if="manageViewsMode">Close mode</div>
+                </button-component>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="mt3">
+        <div class="mt4 mw6 mx-auto" v-if="manageViewsMode">
+          <h2 class="h2">Your configured views</h2>
+
+          <div class="mb2">
+            <button-component @click="$store.dispatch('addView', { type: 'home' })">Add Home View</button-component>
+          </div>
+          <div class="mb2">
+            <button-component @click="$store.dispatch('addView', { type: 'public' })">Add Public View</button-component>
+          </div>
+          <div class="mb2">
+            <form @submit.prevent="addHashtagView" class="cf">
+              <div class="fl w-50">
+                <input-component :value="hashtag" placeholder="#some-hashtag" @change="hashtag = arguments[0]" />
+              </div>
+              <div class="fl w-50 pl3">
+                <button-component>Add Hashtag View</button-component>
+              </div>
+            </form>
+          </div>
+
+          <div v-for="(view, viewIndex) in $store.getters.enhancedViews">
+            <div v-text="view.title" class="mt2 dib"></div>
+            <div class="dib v-mid">
+              <i class="ion ion-ios-close f2 ml2 pointer" @click="$store.dispatch('removeView', viewIndex)"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt4">
           <timeline-views></timeline-views>
         </div>
       </div>
@@ -79,6 +116,8 @@
     },
     data() {
       return {
+        hashtag: '',
+        manageViewsMode: false,
         usernameWithDomain: '',
       }
     },
@@ -93,7 +132,21 @@
           `${apiEndpoint}/oauth/authorize?${params}`,
           '_self'
         )
-      }
+      },
+      addHashtagView() {
+        let { hashtag } = this
+
+        hashtag = hashtag.replace(/#/g, '').trim()
+
+        if (!hashtag) return alert('Please add a hashtag')
+
+
+        this.$store.dispatch('addView', {
+          type: 'hashtag',
+          data: { hashtag } })
+
+        this.hashtag = ''
+      },
     },
   }
 </script>

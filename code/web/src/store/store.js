@@ -5,28 +5,46 @@ import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-// TODO: display vuex view state (feed)
-// TODO: add simple view state logic (home, mentions, tags, search?)
+const types = {
+  home: {
+    path: () => '/api/v1/timelines/home',
+    streamingPath: () => '/api/v1/streaming/user',
+    title: () => 'Home',
+  },
+  public: {
+    path: () => '/api/v1/timelines/public',
+    streamingPath: () => '/api/v1/streaming/public',
+    title: () => 'Public',
+  },
+  hashtag: {
+    path: (data) => `/api/v1/timelines/tag/${data.hashtag}`,
+    streamingPath: (data) => `/api/v1/streaming/hashtag/?tag=${data.hashtag}`,
+    title: (data) => `#${data.hashtag}`,
+  }
+}
+
 export default new Vuex.Store({
   plugins: [createPersistedState({
     key: 'mastoviewrState'
   })],
+  getters: {
+    enhancedViews(state) {
+      return state.views.map(view => ({
+        ...view,
+        ...Object.keys(types[view.type]).reduce((acc, key) => ({
+          ...acc,
+          [key]: types[view.type][key](view.data),
+        }), {}),
+      }))
+    },
+  },
   state: {
     clientId: '',
     clientSecret: '',
     apiEndpoint: '',
     accessToken: '',
     user: {},
-    views: [
-      {
-        type: 'home',
-        reloadSeconds: 5,
-      },
-      {
-        type: 'mentions',
-        reloadSeconds: 10,
-      },
-    ],
+    views: [],
   },
   mutations: {
     mastodonInstanceRegistered(state, { apiEndpoint, clientId, clientSecret }) {
@@ -47,6 +65,12 @@ export default new Vuex.Store({
     },
     userDataChanged(state, userData) {
       state.user = userData
+    },
+    viewRemoved(state, indexToRemove) {
+      state.views = state.views.filter((view, viewIndex) => viewIndex !== indexToRemove)
+    },
+    viewAdded(state, viewData) {
+      state.views.push(viewData)
     },
   },
   actions: {
@@ -93,6 +117,12 @@ export default new Vuex.Store({
           commit('userDataChanged', user)
         })
       }
+    },
+    removeView({ commit }, index) {
+      commit('viewRemoved', index)
+    },
+    addView({ commit }, viewData) {
+      commit('viewAdded', viewData)
     },
     logOut({ commit }) {
       commit('accessTokenRemoved')
