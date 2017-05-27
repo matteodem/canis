@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "AGPL-3.0",
   "scripts": {
-    "dev": "poi src/index.js"
+    "dev": "poi src/index.js",
+    "build": "poi build src/index.js",
+    "deploy-test": "yarn build && cd dist && surge . --domain test-canis-app.surge.sh"
   },
   "dependencies": {
     "axios": "^0.16.1",
